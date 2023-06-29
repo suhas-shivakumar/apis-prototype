@@ -1,0 +1,49 @@
+{% load static %}
+<html>
+  <title>Login Page</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}"> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <div class="container">
+    <h2 class="login-title">Log in</h2>
+
+    <form class="login-form" method="post" action="">{% csrf_token %}
+      <div>
+        <label for="name">Client ID </label>
+        <input
+               id="client_id"
+               type="text"
+               placeholder="Client ID"
+               name="client_id"
+               required
+               />
+      </div>
+
+      <div>
+        <label for="password">Client Secret </label>
+        <input
+               id="client_secret"
+               type="text"
+               placeholder="Client Secret"
+               name="client_secret"
+               required
+               />
+      </div>
+      <button class="btn btn--form" type="submit" value="Log in">
+        Log in
+      </button>
+    </form>
+  </div>
+  <script>
+    if (!!localStorage.client_id && !!localStorage.client_secret) {
+      $('#client_id').attr({value: localStorage['client_id']});
+      $('#client_secret').attr({value: localStorage['client_secret']});
+      $('form.login-form').submit();
+    }
+    $(document).on('submit','form.login-form',function(){
+        let id = $("#client_id").val();
+        let secret = $("#client_secret").val();
+        localStorage.setItem("client_id", id);
+        localStorage.setItem("client_secret", secret); 
+    });
+  </script>
+</html>

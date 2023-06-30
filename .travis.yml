@@ -9,11 +9,11 @@ before_install:
 
 deploy:
   provider: elasticbeanstalk
-  region: "us-east-1"
-  app: "prototype-apis"
-  env: "Prototype-apis-env"
-  bucket_name: "elasticbeanstalk-us-east-1-886715373652"
-  bucket_path: "prototype-apis"
+  region: "us-east-2"
+  app: "hackathon-tech4th"
+  env: "Hackathon-tech4th-env"
+  bucket_name: "elasticbeanstalk-us-east-2-334675205829"
+  bucket_path: "hackathon-tech4th"
   on:
     branch: master
   acess_key_id: $AWS_ACCESS_KEY

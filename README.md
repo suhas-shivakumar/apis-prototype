@@ -25,7 +25,7 @@ pip install -r requirements.txt
 Finally, run the Django server.
 
 ```sh
-python amadeus_demo_api/manage.py runserver
+python manage.py runserver
 ```
 
 Finally, open a browser and go to `http://127.0.0.1:8000/`

@@ -1,0 +1,16 @@
+{% load static %}
+<html>
+<title>Trip Purpose Prediction</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/trip_index.css' %}">
+	<script src="{% static 'js/form.js' %}"></script>
+	<div id="main">
+			<div class="fof">
+					<h2>{{message}}</h2>
+					<h1>{{result}}</h1>
+			</div>
+			<div class="back" id="back">
+				<button class="buttons back" role="button" onclick="prototype()">Back To Search</button>
+			</div>
+			{% csrf_token %}
+	</div>
+</html>

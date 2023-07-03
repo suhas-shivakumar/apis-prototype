@@ -65,6 +65,7 @@
   
 </svg>
 <script src="{% static 'js/chatbot.js' %}"></script>
+
 <div class="options">
   <p>Amadeus Prototype Solutions</p>
     <div class="smart-flight-div">
@@ -73,6 +74,7 @@
     <div class="trip-purpose">
         <button class="smart-flight" role="button" onclick="prototype('trip_purpose/')">Smart Trip Purpose</button>
     </div>
+    {% csrf_token %}
 </div>
 <div class="logout" id="logout">
     <button class="buttons logout" role="button" onclick="logout()">Logout</button>

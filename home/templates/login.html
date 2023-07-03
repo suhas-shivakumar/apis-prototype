@@ -6,7 +6,8 @@
   <div class="container">
     <h2 class="login-title">Log in</h2>
 
-    <form class="login-form" method="post" action="">{% csrf_token %}
+    <form class="login-form" method="post" id="login-form" action="">
+      {% csrf_token %}
       <div>
         <label for="name">Client ID </label>
         <input
@@ -33,17 +34,4 @@
       </button>
     </form>
   </div>
-  <script>
-    if (!!localStorage.client_id && !!localStorage.client_secret) {
-      $('#client_id').attr({value: localStorage['client_id']});
-      $('#client_secret').attr({value: localStorage['client_secret']});
-      $('form.login-form').submit();
-    }
-    $(document).on('submit','form.login-form',function(){
-        let id = $("#client_id").val();
-        let secret = $("#client_secret").val();
-        localStorage.setItem("client_id", id);
-        localStorage.setItem("client_secret", secret); 
-    });
-  </script>
 </html>

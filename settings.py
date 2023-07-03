@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "flight_search",
     "trip_purpose",
-    "home"
+    "home",
 ]
 
 MIDDLEWARE = [
@@ -130,3 +130,9 @@ ACCESS_TOKEN_URL = "https://test.api.amadeus.com/v1/security/oauth2/token"
 
 # List of API's
 TRIP_PURPOSE_API = "https://test.api.amadeus.com/v1/travel/predictions/trip-purpose"
+FLIGHT_PREDICTION_API = "https://test.api.amadeus.com/v2/shopping/flight-offers/prediction"
+
+CLIENT_ID = "AMADEUS_CLIENT_ID"
+CLIENT_SECRET = "AMADEUS_CLIENT_SECRET"
+
+OPEN_AI_URL = "https://api.openai.com/v1/chat/completions"

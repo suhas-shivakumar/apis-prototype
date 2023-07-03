@@ -3,6 +3,7 @@ from amadeus import Client, ResponseError, Location
 from django.http import HttpResponse, HttpRequest
 import json
 import os
+from django.conf import settings
 
 def origin_airport_search(request):
     if is_ajax(request=request):
@@ -34,6 +35,10 @@ def is_ajax(request):
 
 
 def verify(request: HttpRequest) -> HttpResponse:
-    global amadeus
-    amadeus = Client()
-    return origin_airport_search(request)
+    if settings.CLIENT_ID in request.session and settings.CLIENT_SECRET in request.session:
+        os.environ[settings.CLIENT_ID] = request.session[settings.CLIENT_ID]
+        os.environ[settings.CLIENT_SECRET] = request.session[settings.CLIENT_SECRET]
+        global amadeus
+        amadeus = Client()
+        return origin_airport_search(request)
+    return "Credentials not found"

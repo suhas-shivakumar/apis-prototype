@@ -7,4 +7,5 @@ urlpatterns = [
     path('snd_msg_to_bot/', views.chatgpt, name='chatbot'),
     path('flight_search/', include('flight_search.urls')),
     path('trip_purpose/', include('trip_purpose.urls')),
+    path('logout/', views.logout, name='logout'),
 ]

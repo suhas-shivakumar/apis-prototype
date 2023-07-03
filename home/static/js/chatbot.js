@@ -214,9 +214,7 @@ const send = (text = '') => {
 }
 
 function logout() {
-    localStorage.removeItem('client_id')
-    localStorage.removeItem('client_secret')
-    window.location.href = '..'
+    window.location.href = '../logout/'
 }
 
 function prototype(path) {
@@ -224,16 +222,11 @@ function prototype(path) {
     form.method = 'post'
     form.action = path
     form.target = "_blank"
-    let params = { "client_id": localStorage.client_id, "client_secret": localStorage.client_secret }
-    for (const key in params) {
-        if (params.hasOwnProperty(key)) {
-            const hiddenField = document.createElement('input')
-            hiddenField.type = 'hidden'
-            hiddenField.name = key
-            hiddenField.value = params[key]
-            form.appendChild(hiddenField)
-        }
-    }
+    const hiddenField = document.createElement('input')
+    hiddenField.type = 'hidden'
+    hiddenField.name = "csrfmiddlewaretoken"
+    hiddenField.value = document.getElementsByName('csrfmiddlewaretoken')[0].value
+    form.appendChild(hiddenField)
     document.body.appendChild(form)
     form.submit()
 }

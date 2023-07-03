@@ -1,11 +1,13 @@
 import json
 import os
+from django.conf import settings
 from amadeus import Client, ResponseError, Location
 from django.shortcuts import render
 from django.contrib import messages
 from .flight import Flight
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from django.views.decorators.csrf import csrf_exempt
+import requests
+import logging
 
 def demo(request):
     origin = request.POST.get('Origin')
@@ -29,9 +31,9 @@ def demo(request):
         try:
             trip_purpose_response = amadeus.travel.predictions.trip_purpose.get(**kwargs).data
             tripPurpose = trip_purpose_response['result']
-        except ResponseError as error:
+        except Exception as error:
             messages.add_message(request, messages.ERROR, error)
-            return render(request, 'demo/demo_form.html', {})
+            return render(request, 'demo/search_form.html', {})
 
     if origin and destination and departureDate:
         try:
@@ -39,7 +41,8 @@ def demo(request):
             prediction_flights = amadeus.shopping.flight_offers.prediction.post(flight_offers.result)
         except ResponseError as error:
             messages.add_message(request, messages.ERROR, error)
-            return render(request, 'demo/demo_form.html', {})
+            return render(request, 'demo/search_form.html', {})
+
         flights_offers_returned = []
         for flight in flight_offers.data:
             offer = Flight(flight).construct_flights()
@@ -49,8 +52,7 @@ def demo(request):
         for flight in prediction_flights.data:
             offer = Flight(flight).construct_flights()
             prediction_flights_returned.append(offer)
-
-        return render(request, 'demo/results.html', {'response': flights_offers_returned,
+        return render(request, 'demo/search_results.html', {'response': flights_offers_returned,
                                                      'prediction': prediction_flights_returned,
                                                      'origin': origin,
                                                      'destination': destination,
@@ -58,50 +60,19 @@ def demo(request):
                                                      'returnDate': returnDate,
                                                      'tripPurpose': tripPurpose,
                                                      })
-    return render(request, 'demo/demo_form.html', {})
+    return render(request, 'demo/search_form.html', {})
 
-
-def origin_airport_search(request):
-    if is_ajax(request=request):
-        try:
-            data = amadeus.reference_data.locations.get(keyword=request.GET.get('term', None),
-                                                        subType=Location.ANY).data
-            return HttpResponse(get_city_airport_list(data), 'application/json')
-        except ResponseError as error:
-            messages.add_message(request, messages.ERROR, error)
-
-
-
-def destination_airport_search(request):
-    if is_ajax(request=request):
-        try:
-            data = amadeus.reference_data.locations.get(keyword=request.GET.get('term', None),
-                                                        subType=Location.ANY).data
-            return HttpResponse(get_city_airport_list(data), 'application/json')
-        except ResponseError as error:
-            messages.add_message(request, messages.ERROR, error)
-    
-
-def get_city_airport_list(data):
-    result = []
-    for i, val in enumerate(data):
-        result.append(data[i]['iataCode'] + ', ' + data[i]['name'])
-    result = list(dict.fromkeys(result))
-    return json.dumps(result)
-
-def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-
-@csrf_exempt
 def verify(request: HttpRequest) -> HttpResponse:
-    client_id = request.POST.get("client_id", None)
-    client_secret = request.POST.get("client_secret", None)
-
-    if client_id is None or client_secret is None:
-        return HttpResponseRedirect('../')
+    if amadeus_status(request):
+        return demo(request)
     else:
-        os.environ["AMADEUS_CLIENT_ID"] = client_id
-        os.environ["AMADEUS_CLIENT_SECRET"] = client_secret
+        return HttpResponseRedirect('../')
+
+def amadeus_status(request: HttpRequest):
+    if settings.CLIENT_ID in request.session and settings.CLIENT_SECRET in request.session:
+        os.environ[settings.CLIENT_ID] = request.session[settings.CLIENT_ID]
+        os.environ[settings.CLIENT_SECRET] = request.session[settings.CLIENT_SECRET]
         global amadeus
         amadeus = Client()
-        return demo(request)
+        return True
+    return False

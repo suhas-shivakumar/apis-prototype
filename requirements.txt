@@ -1,4 +1,4 @@
-amadeus==3.5.0
+amadeus==5.0.0
 asgiref==3.7.2
 Django==4.1.7
 pytz==2019.3

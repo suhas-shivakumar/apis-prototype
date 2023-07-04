@@ -2,7 +2,7 @@ const accessToken = '3796899bd37c423bad3a21a25277bce0'
 const baseUrl = 'snd_msg_to_bot/'
 const sessionId = '20150910';
 const loader = `<span class='loader'><span class='loader__dot'></span><span class='loader__dot'></span><span class='loader__dot'></span></span>`
-const errorMessage = 'My apologies, I\'m not avail at the moment, however, feel free to reach out our amadeus support team.'
+const errorMessage = 'My apologies, I\'m not available at the moment, however, feel free to reach out our amadeus support team.'
 const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
 const chatbot = document.querySelector('.chatbot')
 const chatbotMessageWindow = document.querySelector('.chatbot__message-window')

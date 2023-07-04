@@ -52,6 +52,7 @@ def chatgpt(request):
         return render(request, 'chat.html', {})
 
 def logout(request):
-    id = request.session.pop(settings.CLIENT_ID)
-    secret = request.session.pop(settings.CLIENT_SECRET)
+    if settings.CLIENT_ID in request.session and settings.CLIENT_SECRET in request.session:
+        id = request.session.pop(settings.CLIENT_ID)
+        secret = request.session.pop(settings.CLIENT_SECRET)
     return render(request, 'login.html', {})

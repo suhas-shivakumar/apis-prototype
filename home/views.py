@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.conf import settings
 import os
 import requests
@@ -55,4 +55,4 @@ def logout(request):
     if settings.CLIENT_ID in request.session and settings.CLIENT_SECRET in request.session:
         id = request.session.pop(settings.CLIENT_ID)
         secret = request.session.pop(settings.CLIENT_SECRET)
-    return render(request, 'login.html', {})
+    return HttpResponseRedirect('../')
